@@ -65,7 +65,7 @@ function setup() {
     trex.scale = 0.5;
     trex.setCollider('circle', -10, 0, 45);
   
-    trex.debug = true;
+    //trex.debug = true;
     trex.addAnimation('trex parado', animacaoDerrota);
 
     spriteGameOver = createSprite(width/2, 100);
@@ -77,7 +77,7 @@ function setup() {
     spriteRestart.addImage('recomeçar', recomecar);
 
 
-    solo = createSprite(300, 180, 600, 20);
+    solo = createSprite(width/2, 180, 600, 20);
     solo.addImage('ground2.png', soloImage);
 
     solo2 = createSprite(300, 200, 600, 20);
@@ -97,9 +97,9 @@ function setup() {
 function criaNuvem() {
     if(frameCount % 60 == 0) {
         num = Math.round(random(30, 80));
-        nuvem = createSprite(600, num, 340, 10);
+        nuvem = createSprite(width, num, 340, 10);
         nuvem.addImage('animacao', animacaoNuvem);
-        nuvem.lifetime = 230;
+        nuvem.lifetime = width/nuvem.velocityX;
         nuvem.velocityX = -3;
         nuvem.scale = 0.5;
         
@@ -114,7 +114,7 @@ function criaNuvem() {
 
 function criarCacto() {
     if(frameCount % 60 == 0) {
-        cacto = createSprite(600, 170, 30, 30);
+        cacto = createSprite(width, 170, 30, 30);
        
         if((6 + Math.round(placar / 100)) > 20) {
             cacto.velocityX = -20;
@@ -152,7 +152,7 @@ function criarCacto() {
         }
 
         cacto.scale = 0.5;
-        cacto.lifetime = 110;
+        cacto.lifetime = width/cacto.velocityX;
         grupoCacto.add(cacto);
     }
         
@@ -175,7 +175,7 @@ function draw() {
     drawSprites();
 
     fill('gray');
-    text('pontuação ' + placar, 500, 50);
+    text('pontuação ' + placar, width-200, 50);
 
     trex.collide(solo2);
 
@@ -199,7 +199,7 @@ function draw() {
         criaNuvem();
         criarCacto();
 
-        if(solo.x < 0) {
+        if(solo.x < 150) {
             solo.x = solo.width / 2;
         }
         if(grupoCacto.isTouching(trex)) {
@@ -237,8 +237,9 @@ function draw() {
         spriteRestart.visible = true;
 
 
-        if(mousePressedOver(spriteRestart)) {
+        if(mousePressedOver(spriteRestart) || touches.length > 0) {
             reset();
+            touches = [];
         }
 
     }
