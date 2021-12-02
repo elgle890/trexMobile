@@ -1,1 +1,1 @@
-# trexMobile
+# trex-template
